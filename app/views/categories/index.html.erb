@@ -1,0 +1,17 @@
+<h1>Categories</h1>
+
+<% if @today %>
+  <h3>Current Tasks: <%= @today.title %></h3>
+<% else %>
+  <h3>No tasks scheduled for today</h3>
+<% end %>
+
+<ul>
+  <% @categories.each do |category| %>
+    <li>
+      <%= link_to "#{category.title}", category %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Create New Category", new_category_path, type: "button", class: "btn btn-primary" %>

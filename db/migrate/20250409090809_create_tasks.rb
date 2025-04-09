@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration[7.2]
       t.datetime :due_date
       t.string :status, default: 'pending'
       t.string :priority, default: 'medium'
+      t.references :category, null: false, foreign_key: true
 
       t.timestamps
     end

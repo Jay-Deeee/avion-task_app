@@ -27,8 +27,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_09_090809) do
     t.datetime "due_date"
     t.string "status", default: "pending"
     t.string "priority", default: "medium"
+    t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_tasks_on_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -42,4 +44,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_09_090809) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "tasks", "categories"
 end

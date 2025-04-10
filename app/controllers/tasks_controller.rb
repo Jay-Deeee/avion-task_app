@@ -4,6 +4,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = @category.tasks
+    @today = Task.find_by(date: Date.today)
   end
 
   def show; end
@@ -47,6 +48,6 @@ class TasksController < ApplicationController
   end
   
   def task_params
-    params.require(:task).permit(:title, :body, :due_date, :status, :priority)
+    params.require(:task).permit(:title, :body, :date, :due_date, :status, :priority, :category_id)
   end
 end

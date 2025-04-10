@@ -5,11 +5,12 @@ class CategoriesController < ApplicationController
 
   def index
     @categories = Category.all
-    @today = Category.find_by(date: Date.today)
   end
 
   def show
-    # @task = @category.tasks.new
+    @new_task = @category.tasks.new
+    @tasks = Task.all
+    @today = Task.find_by(date: Date.today)
   end
 
   def new
@@ -20,7 +21,7 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
 
     if @category.save
-      redirect_to @category, notice: "Category: '#{@category.title}' saved successfully."
+      redirect_to @category, notice: "Category: '#{@category.name}' saved successfully."
     else
       flash[:alert] = "Failed to save category."
       render :new, status: :unprocessable_entity
@@ -49,7 +50,7 @@ class CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:title, :date, :status)
+    params.require(:category).permit(:name, :user_id)
   end
 
   # def record_not_found

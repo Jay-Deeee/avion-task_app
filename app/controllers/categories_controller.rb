@@ -4,9 +4,9 @@ class CategoriesController < ApplicationController
   # rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
-    @categories = Category.includes(:tasks)
+    @categories = current_user.categories.includes(:tasks)
     @today = Date.today
-    @high_prio_tasks = Task.where(priority: "high").order(:due_date)
+    @high_prio_tasks = current_user.tasks.where(priority: "high").order(:due_date)
   end
 
   def show
@@ -19,7 +19,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = Category.new(category_params)
+    @category = current_user.categories.new(category_params)
 
     if @category.save
       redirect_to @category, notice: "Category: '#{@category.name}' saved successfully."
@@ -47,11 +47,11 @@ class CategoriesController < ApplicationController
 
   private
   def set_category
-    @category = Category.find(params[:id])
+    @category = current_user.categories.find_by!(id: params[:id])
   end
 
   def category_params
-    params.require(:category).permit(:name, :user_id)
+    params.require(:category).permit(:name)
   end
 
   # def record_not_found

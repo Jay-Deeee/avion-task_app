@@ -1,6 +1,6 @@
 <%= link_to "Signout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Signout?" }, type: "button", class: "btn btn-danger" %>
 
-<h1><%= "Hello! Date today: #{@today.strftime("%b %d, %Y")}" %></h1>
+<h1>Hello! <%= "The date today is #{@today.strftime("%b %d, %Y")}" %></h1>
 
 <h3>High Priority Tasks</h3>
 <% if @high_prio_tasks.any? %>

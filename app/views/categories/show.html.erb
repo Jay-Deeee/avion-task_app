@@ -1,10 +1,35 @@
-<h1>Hello!</h1>
-<!--
-<% if @today %>
-  <h3>Current Tasks: <%= @today.title %></h3>
+<% today_tasks = @category.tasks.select { |task| task.due_date == @today } %>
+
+<h3>
+  <strong><%= @category.name %></strong> 
+  <%= link_to "Rename", edit_category_path(@category), class: "fs-6" %>
+</h3>
+
+<h4>Tasks due today:</h4>
+<% if today_tasks.any? %>
+  <ul>
+    <% today_tasks.each do |task| %>
+      <li><%= task.title %> - Due: <%= task.due_date&.strftime("%-I:%M %p") || "No due time" %></li>
+    <% end %>
+  </ul>
 <% else %>
-  <h3>No tasks scheduled for today</h3>
+  <p><em>No tasks due today.</em></p>
 <% end %>
 
-<%= render @article.comments.select(&:persisted?) %>
--->
+<h4>All tasks:</h4>
+<% sorted_tasks = @category.tasks.order(:due_date) %>
+<% if sorted_tasks.any? %>
+  <ul>
+    <% sorted_tasks.each do |task| %>
+      <li><%= task.title %> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %>
+      <% if task.due_date < Time.current %>
+        <span class="text-danger"> (Overdue)</span>
+      <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p><em>No tasks in this category.</em></p>
+<% end %>
+
+<%= link_to "Back to Home", categories_path, type: "button", class: "btn btn-primary" %>

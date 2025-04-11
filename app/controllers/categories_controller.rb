@@ -11,6 +11,7 @@ class CategoriesController < ApplicationController
 
   def show
     @new_task = @category.tasks.new
+    @today = Date.today
   end
 
   def new

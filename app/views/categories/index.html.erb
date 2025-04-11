@@ -18,7 +18,7 @@
 <% @categories.each do |category| %>
   <% today_tasks = category.tasks.select { |task| task.due_date == @today } %>
 
-  <h3><strong><%= category.name %></strong></h3>
+  <h3><strong><%= link_to category.name, category_path(category), style: "color: #000; text-decoration: none" %></strong></h3>
 
   <h4>Tasks due today:</h4>
   <% if today_tasks.any? %>

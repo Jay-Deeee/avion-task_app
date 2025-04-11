@@ -4,13 +4,13 @@ class CategoriesController < ApplicationController
   # rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
-    @categories = Category.all
+    @categories = Category.includes(:tasks)
+    @today = Date.today
+    @high_prio_tasks = Task.where(priority: "high").order(:due_date)
   end
 
   def show
     @new_task = @category.tasks.new
-    @tasks = Task.all
-    @today = Task.find_by(date: Date.today)
   end
 
   def new

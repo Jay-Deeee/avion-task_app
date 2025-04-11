@@ -2,12 +2,45 @@
 
 <h1>Categories</h1>
 
-<ul>
-  <% @categories.each do |category| %>
-    <li>
-      <%= link_to "#{category.title}", category %>
-    </li>
+<h3>High Priority Tasks</h3>
+<% if @high_prio_tasks.any? %>
+  <ul>
+    <% @high_prio_tasks.each do |task| %>
+      <li>
+        <strong><%= task.title %></strong> - Due: <%= task.due_date %> (in Category: <%= task.category.name %>)
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p><em>No high priority tasks.</em></p>
+<% end %>
+
+<% @categories.each do |category| %>
+  <% today_tasks = category.tasks.select { |task| task.due_date == @today } %>
+
+  <h3><strong><%= category.name %></strong></h3>
+
+  <h4>Tasks due today:</h4>
+  <% if today_tasks.any? %>
+    <% today_tasks.each do |task| %>
+      <p><%= task.title %> - Due: <%= task.due_date&.strftime("%-I:%M %p") || "No due time" %></p>
+    <% end %>
+  <% else %>
+    <p><em>No tasks due today.</em></p>
   <% end %>
-</ul>
+
+  <h4>All tasks:</h4>
+  <% sorted_tasks = category.tasks.order(:due_date) %>
+  <% if sorted_tasks.any? %>
+    <% sorted_tasks.each do |task| %>
+      <p><%= task.title %> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %></p>
+      <% if task.due_date < Time.current %>
+        <span class="text-danger">(Overdue)</span>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p><em>No tasks in this category.</em></p>
+  <% end %>
+<% end %>
 
 <%= link_to "Create New Category", new_category_path, type: "button", class: "btn btn-primary" %>

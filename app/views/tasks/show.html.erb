@@ -1,0 +1,14 @@
+<h3>
+  <%= @task.title %>
+  <%= link_to "Edit", edit_category_task_path(category_id: @category.id, id: @task.id), class: "fs-6" %>
+</h3>
+
+<p><em><%= @task.body %></em></p>
+<p><%= "Date: #{@task.date.strftime("%b %d, %Y")}" %></p>
+<p><%= "Due Date: #{@task.due_date.strftime("%b %d, %Y at %-I:%M %p")}" %></p>
+<p><%= "Status: #{@task.status.humanize}" %></p>
+<p><%= "Priority: #{@task.priority.humanize}" %></p>
+
+<%= link_to "Delete Task", category_task_path(category_id: @category.id, id: @task.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"}, type: "button", class: "btn btn-danger" %>
+
+<%= link_to "Back to Category", category_path(@category), type: "button", class: "btn btn-primary" %>

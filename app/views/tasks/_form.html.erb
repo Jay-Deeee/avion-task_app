@@ -1,0 +1,61 @@
+<%= form_with(model: [category, task]) do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+    <% @task.errors.full_messages_for(:title).each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+    <% @task.errors.full_messages_for(:body).each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :date %><br>
+    <%= form.date_field :date, start_year: Date.today.year - 1 %>
+    <% @task.errors.full_messages_for(:date).each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :due_date, "Due Date" %><br>
+    <%= date_select :task, :due_date, discard_hour: true, discard_minute: true %>
+    <span>Time: </span>
+    <%= select_tag "task[due_hour]", options_for_select((1..12).map { |h| [h, h] }, selected: Time.current.hour) %>
+    <%= select_tag "task[due_minute]", options_for_select((0..59).step(15).map { |m| ["%02d" % m, m] }, selected: Time.current.min) %>
+    <%= select_tag "task[due_meridian]", options_for_select(["AM", "PM"], selected: Time.current.strftime("%p")) %>
+    <% @task.errors.full_messages_for(:due_date).each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :status %><br>
+    <% Task.statuses.keys.each do |status| %>
+      <div>
+        <%= form.radio_button :status, status %>
+        <%= form.label :status, status.humanize, value: status %>
+      </div>
+    <% end %>
+    <% @task.errors.full_messages_for(:status).each do |message| %>
+    <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :priority %><br>
+    <% Task.priorities.keys.each do |priority| %>
+      <div>
+        <%= form.radio_button :priority, priority %>
+        <%= form.label :priority, priority.humanize, value: priority %>
+      </div>
+    <% end %>
+    <% @task.errors.full_messages_for(:priority).each do |message| %>
+      <div class="text-danger"><%= message %></div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

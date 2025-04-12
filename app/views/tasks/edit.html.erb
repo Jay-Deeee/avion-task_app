@@ -1,0 +1,5 @@
+<h3>Edit Task</h3>
+
+<%= render "form", category: @category, task: @task %>
+
+<%= link_to "Back", category_task_path(@category), type: "button", class: "btn btn-primary" %>

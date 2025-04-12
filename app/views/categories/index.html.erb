@@ -16,7 +16,7 @@
 <% end %>
 
 <% @categories.each do |category| %>
-  <% today_tasks = category.tasks.select { |task| task.due_date == @today } %>
+  <% today_tasks = category.tasks.where(due_date: Time.now.beginning_of_day..Time.now.end_of_day) %>
 
   <h3><strong><%= link_to category.name, category_path(category), style: "color: #000; text-decoration: none" %></strong></h3>
 

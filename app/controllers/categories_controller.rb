@@ -10,8 +10,8 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @new_task = @category.tasks.new
-    @today = Date.today
+    @task = @category.tasks.new
+    @today_tasks = @category.tasks.where(due_date: Time.now.beginning_of_day..Time.now.end_of_day)
   end
 
   def new

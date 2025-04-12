@@ -1,15 +1,13 @@
-<% today_tasks = @category.tasks.select { |task| task.due_date == @today } %>
-
 <h3>
   <strong><%= @category.name %></strong> 
   <%= link_to "Rename", edit_category_path(@category), class: "fs-6" %>
 </h3>
 
 <h4>Tasks due today:</h4>
-<% if today_tasks.any? %>
+<% if @today_tasks.any? %>
   <ul>
-    <% today_tasks.each do |task| %>
-      <li><%= task.title %> - Due: <%= task.due_date&.strftime("%-I:%M %p") || "No due time" %></li>
+    <% @today_tasks.each do |task| %>
+      <li><%= link_to task.title, category_task_path(task), style: "color: #000; text-decoration: none" %> - Due: <%= task.due_date&.strftime("%-I:%M %p") || "No due time" %></li>
     <% end %>
   </ul>
 <% else %>
@@ -21,15 +19,21 @@
 <% if sorted_tasks.any? %>
   <ul>
     <% sorted_tasks.each do |task| %>
-      <li><%= task.title %> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %>
+      <li><%= link_to task.title, category_task_path(category_id: task.category_id, id: task), style: "color: #000; text-decoration: none" %> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %>
       <% if task.due_date < Time.current %>
         <span class="text-danger"> (Overdue)</span>
       <% end %>
+      <%= link_to "", category_task_path(category_id: @category.id, id: task.id), data: { turbo_method: :delete }, turbo_confirm: "Are you sure?", type: "button", class: "btn-close" %>
       </li>
     <% end %>
   </ul>
 <% else %>
   <p><em>No tasks in this category.</em></p>
 <% end %>
+
+<h3>New Task:</h3>
+<%= render "tasks/form", category: @category, task: @task %>
+
+<%= link_to "Delete Category", category_path(@category), data: { turbo_method: :delete }, turbo_confirm: "Are you sure?", type: "button", class: "btn btn-danger" %>
 
 <%= link_to "Back to Home", categories_path, type: "button", class: "btn btn-primary" %>

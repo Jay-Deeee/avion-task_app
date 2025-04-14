@@ -15,6 +15,32 @@
   <p><em>No high priority tasks.</em></p>
 <% end %>
 
+<h3>Medium Priority Tasks</h3>
+<% if @med_prio_tasks.any? %>
+  <ul>
+    <% @med_prio_tasks.each do |task| %>
+      <li>
+        <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p><em>No high priority tasks.</em></p>
+<% end %>
+
+<h3>Low Priority Tasks</h3>
+<% if @low_prio_tasks.any? %>
+  <ul>
+    <% @low_prio_tasks.each do |task| %>
+      <li>
+        <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p><em>No high priority tasks.</em></p>
+<% end %>
+
 <% @categories.each do |category| %>
   <% today_tasks = category.tasks.where(due_date: Time.now.beginning_of_day..Time.now.end_of_day) %>
 

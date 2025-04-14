@@ -1,12 +1,14 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
-  # rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  # rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @categories = current_user.categories.includes(:tasks)
     @today = Date.today
     @high_prio_tasks = current_user.tasks.where(priority: "high").order(:due_date)
+    @med_prio_tasks = current_user.tasks.where(priority: "medium").order(:due_date)
+    @low_prio_tasks = current_user.tasks.where(priority: "low").order(:due_date)
   end
 
   def show
@@ -54,11 +56,11 @@ class CategoriesController < ApplicationController
     params.require(:category).permit(:name)
   end
 
-  # def record_not_found
-  #   redirect_to articles_path, alert: "Record does not exist."
-  # end
+  def record_not_found
+    redirect_to articles_path, alert: "Record does not exist."
+  end
 
-  # def invalid_foreign_key
-  #   redirect_to articles_path, alert: "Unable to delete category. Still referenced from tasks."
-  # end
+  def invalid_foreign_key
+    redirect_to articles_path, alert: "Unable to delete category. Still referenced from tasks."
+  end
 end

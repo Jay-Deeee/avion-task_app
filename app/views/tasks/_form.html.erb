@@ -1,4 +1,6 @@
 <%= form_with(model: [category, task]) do |form| %>
+<section style="display: flex; gap: 50px;">
+<div>
   <p>
     <%= form.label :title %><br>
     <%= form.text_field :title %>
@@ -13,6 +15,9 @@
       <div class="text-danger"><%= message %></div>
     <% end %>
   </p>
+</div>
+
+<div>
   <p>
     <%= form.label :date %><br>
     <%= form.date_field :date, start_year: Date.today.year - 1 %>
@@ -31,6 +36,9 @@
       <div class="text-danger"><%= message %></div>
     <% end %>
   </p>
+</div>
+
+<div>
   <p>
     <%= form.label :status %><br>
     <% Task.statuses.keys.each do |status| %>
@@ -55,6 +63,9 @@
       <div class="text-danger"><%= message %></div>
     <% end %>
   </p>
+</div>
+</section>
+
   <p>
     <%= form.submit %>
   </p>

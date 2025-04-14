@@ -1,5 +1,7 @@
+<section style="padding: 10px;">
 <h1>Edit Category</h1>
 
 <%= render "form", category: @category %>
-
-<%= link_to "Back to Home", categories_path, type: "button", class: "btn btn-primary" %>
+<br>
+<%= link_to "Back to Home", category_path(@category), type: "button", class: "btn btn-primary" %>
+</section>

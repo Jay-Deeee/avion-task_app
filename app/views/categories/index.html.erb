@@ -1,49 +1,62 @@
+<div style="display: flex; justify-content: end; padding: 10px;">
 <%= link_to "Signout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Signout?" }, type: "button", class: "btn btn-danger" %>
+</div>
 
-<h1>Hello! <%= "The date today is #{@today.strftime("%b %d, %Y")}" %></h1>
-
-<h3>High Priority Tasks</h3>
-<% if @high_prio_tasks.any? %>
-  <ul>
-    <% @high_prio_tasks.each do |task| %>
-      <li>
-        <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
-      </li>
+<section style="padding: 15px;">
+<h1>Hello, welcome to your journal app!</h1>
+<h5><em><%= "The date today is #{@today.strftime("%b %d, %Y")}" %></em></h5>
+<div class="prio-section" style="display: flex; gap: 50px; margin-bottom: 15px;">
+  <div class=".container-sm" style="border: 2px solid black; border-radius: 20px; min-height: 200px;">
+    <h3 style="text-align: center; background-color: #ff2e2e; color: #fff; border-radius: 18px 18px 0 0;">High Priority Tasks</h3>
+    <% if @high_prio_tasks.any? %>
+      <ul style="margin-right: 10px">
+        <% @high_prio_tasks.each do |task| %>
+          <li>
+            <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p><em>No high priority tasks.</em></p>
     <% end %>
-  </ul>
-<% else %>
-  <p><em>No high priority tasks.</em></p>
-<% end %>
+  </div>
 
-<h3>Medium Priority Tasks</h3>
-<% if @med_prio_tasks.any? %>
-  <ul>
-    <% @med_prio_tasks.each do |task| %>
-      <li>
-        <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
-      </li>
+  <div class=".container-sm" style="border: 2px solid black; border-radius: 20px; min-height: 200px;">
+    <h3 style="text-align: center; background-color: #fcfc62; border-radius: 18px 18px 0 0;">Medium Priority Tasks</h3>
+    <% if @med_prio_tasks.any? %>
+      <ul style="margin-right: 10px">
+        <% @med_prio_tasks.each do |task| %>
+          <li>
+            <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p><em>No high priority tasks.</em></p>
+  <% end %>
+  </div>
+
+  <div class=".container-sm" style="border: 2px solid black; border-radius: 20px; min-height: 200px;">
+    <h3 style="text-align: center; background-color: #46a64e; color: #fff; border-radius: 18px 18px 0 0;">Low Priority Tasks</h3>
+    <% if @low_prio_tasks.any? %>
+      <ul style="margin-right: 10px">
+        <% @low_prio_tasks.each do |task| %>
+          <li>
+            <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p><em>No high priority tasks.</em></p>
     <% end %>
-  </ul>
-<% else %>
-  <p><em>No high priority tasks.</em></p>
-<% end %>
+  </div>
+</div>
 
-<h3>Low Priority Tasks</h3>
-<% if @low_prio_tasks.any? %>
-  <ul>
-    <% @low_prio_tasks.each do |task| %>
-      <li>
-        <strong><%= task.title %></strong> - Due: <%= task.due_date.strftime("%b %d, %Y at %-I:%M %p") %> (in Category: <%= task.category.name %>)
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p><em>No high priority tasks.</em></p>
-<% end %>
-
+<section style="display: flex; gap: 30px;">
 <% @categories.each do |category| %>
   <% today_tasks = category.tasks.where(due_date: Time.now.beginning_of_day..Time.now.end_of_day) %>
 
+<div>
   <h3><strong><%= link_to category.name, category_path(category), style: "color: #000; text-decoration: none" %></strong></h3>
 
   <h4>Tasks due today:</h4>
@@ -72,6 +85,9 @@
   <% else %>
     <p><em>No tasks in this category.</em></p>
   <% end %>
+</div>
 <% end %>
+</section>
 
 <%= link_to "Create New Category", new_category_path, type: "button", class: "btn btn-primary" %>
+</section>

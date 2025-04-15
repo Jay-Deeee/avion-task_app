@@ -48,8 +48,9 @@ class CategoriesController < ApplicationController
   end
 
   private
+
   def set_category
-    @category = current_user.categories.find_by!(id: params[:id])
+    @category = current_user.categories.find(params[:id])
   end
 
   def category_params
@@ -57,10 +58,10 @@ class CategoriesController < ApplicationController
   end
 
   def record_not_found
-    redirect_to articles_path, alert: "Record does not exist."
+    redirect_to categories_path, alert: "Record does not exist."
   end
 
   def invalid_foreign_key
-    redirect_to articles_path, alert: "Unable to delete category. Still referenced from tasks."
+    redirect_to categories_path, alert: "Unable to delete category. Still referenced from tasks."
   end
 end

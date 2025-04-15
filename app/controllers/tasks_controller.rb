@@ -1,6 +1,8 @@
 class TasksController < ApplicationController
   before_action :set_category
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @tasks = @category.tasks
@@ -68,5 +70,13 @@ class TasksController < ApplicationController
     )
 
     params[:task][:due_date] = due_date
+  end
+
+  def record_not_found
+    redirect_to categories_path, alert: "Record does not exist."
+  end
+
+  def invalid_foreign_key
+    redirect_to categories_path, alert: "Unable to delete category. Still referenced from tasks."
   end
 end
